@@ -142,21 +142,43 @@ def compress_file(filename):
 	f = open(filename, "r")
 	f1 = open("data_compressed", "w")
 	data = f.read()
+<<<<<<< HEAD
+	f.close()
+	#print(data)
+	#start = time.time()
+	print("Starting Compression...")
+	encoding, tree = Huffman_Encoding(data)
+	print("Compression Complete!")
+	#end = time.time()
+	#print("Compression time: ", end - start)
+	print("Starting Encryption...")
+	returned_data = encrypt_file(encoding)
+	print("Encryption Complete!")
+=======
 	#print(data)
 	#start = time.time()
 	encoding, tree = Huffman_Encoding(data)
 	#end = time.time()
 	#print("Compression time: ", end - start)
 	returned_data = encrypt_file(encoding)
+>>>>>>> 7653749e9c714c01604e4b70dec95755ce23e700
 	#print("Compression time: ", end - start)
 	f1.write(encoding)
 	#print("Decoded Output", Huffman_Decoding(encoding, tree))
 
 	f3 = open("data_decompressed", "w")
 	start = time.time()
+<<<<<<< HEAD
+	print("Starting Decompression...")
 	decrypted_data = Huffman_Decoding(returned_data, tree)
 	end = time.time()
 	print("Decompression: ", end-start)
+	print("Done!")
+=======
+	decrypted_data = Huffman_Decoding(returned_data, tree)
+	end = time.time()
+	print("Decompression: ", end-start)
+>>>>>>> 7653749e9c714c01604e4b70dec95755ce23e700
 	f3.write(decrypted_data)
 	f3.close()
 

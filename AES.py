@@ -45,15 +45,28 @@ def encrypt_file(filename):
     f1 = open("data_decrypted", "w")
     #read_file = f.read()
     # First let us encrypt secret message
+<<<<<<< HEAD
+    print("Starting Compression...")
+    encrypted = encrypt(filename, password)
+    print("Encryption Complete...")
+    f.write(str(encrypted))
+
+    print("Starting Decryption...")
+=======
     encrypted = encrypt(filename, password)
     #print(encrypted)
     f.write(str(encrypted))
+>>>>>>> 7653749e9c714c01604e4b70dec95755ce23e700
     decrypted = decrypt(encrypted, password)
     f1.write(str(decrypted))
     str_decrypted = str(decrypted.decode('utf-8'))
     #print(str_decrypted)
     #decompress_file(str_decrypted)
     #print(bytes.decode(decrypted))
+<<<<<<< HEAD
+    print("Decryption Complete...")
+=======
+>>>>>>> 7653749e9c714c01604e4b70dec95755ce23e700
     return str_decrypted
 
 def decrypt_file(filename):
