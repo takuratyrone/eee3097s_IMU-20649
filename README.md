@@ -1,6 +1,6 @@
 # eee3097s_IMU-20649
 
-# The main program is run by icm-20948.py
+# The main program is run by icm20948.py
 Data is read in real time from the IMU and simultaneusly written to a csv file. After a certain period of time (set by python schedule)
 the csv file is sent to the compression block and the file is compressed.
 
