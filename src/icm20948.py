@@ -380,16 +380,22 @@ class ICM20948(object):
 #global f
 
 def open_file():
-	global f, i
+	global f, i, start, s, schedule_delay
 	f.close()
-	i+=1
 	s = str(i)
-	file = "sensor_data"+s
+	file = "sensor_data"+s+".csv"
 	#global f
-	compress_file("sensor_data.txt")
-	print("Sent file for compression...")
+	if i == 0:
+		print("Sent file for compression...")
+		compress_file("sensor_data0.csv")
+	else:
+		print("Sent file for compression...")
+		compress_file(file)
 	f = open(file, "w")
-	f.write("Acc_x, Acc_y, Acc_z, Gyr_x, Gyr_y, Gyr_z, Mag_x, Mag_y, Mag_z\n")
+	f.write("time, Acc_x, Acc_y, Acc_z, Gyr_x, Gyr_y, Gyr_z, Mag_x, Mag_y, Mag_z\n")
+	i+=1
+	#schedule_delay -= 15
+	start = time.time()
 
 if __name__ == '__main__':
   import time
@@ -397,13 +403,16 @@ if __name__ == '__main__':
   MotionVal=[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
   icm20948=ICM20948()
   i = 0
-  f = open("sensor_data.txt", "w")
-  f.write("Acc_x, Acc_y, Acc_z, Gyr_x, Gyr_y, Gyr_z, Mag_x, Mag_y, Mag_z\n")
-  schedule.every(1).minutes.do(open_file)
+  schedule_delay = 1
+  f = open("sensor_data.csv", "w")
+  f.write("time, Acc_x, Acc_y, Acc_z, Gyr_x, Gyr_y, Gyr_z, Mag_x, Mag_y, Mag_z\n")
+  schedule.every(schedule_delay).minutes.do(open_file)
+  start = time.time()
   while True:
     icm20948.icm20948_Gyro_Accel_Read()
     icm20948.icm20948MagRead()
     icm20948.icm20948CalAvgValue()
+    end = time.time()
     time.sleep(0.1)
     icm20948.imuAHRSupdate(MotionVal[0] * 0.0175, MotionVal[1] * 0.0175,MotionVal[2] * 0.0175,
                 MotionVal[3],MotionVal[4],MotionVal[5], 
@@ -411,7 +420,7 @@ if __name__ == '__main__':
     pitch = math.asin(-2 * q1 * q3 + 2 * q0* q2)* 57.3
     roll  = math.atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1)* 57.3
     yaw   = math.atan2(-2 * q1 * q2 - 2 * q0 * q3, 2 * q2 * q2 + 2 * q3 * q3 - 1) * 57.3
-    f.write(f"{Accel[0]}, {Accel[1]}, {Accel[2]}, {Gyro[0]}, {Gyro[1]}, {Gyro[2]}, {Mag[0]}, {Mag[1]}, {Mag[2]}\n")
+    f.write(f"{(end-start):.3f}, {Accel[0]}, {Accel[1]}, {Accel[2]}, {Gyro[0]}, {Gyro[1]}, {Gyro[2]}, {Mag[0]}, {Mag[1]}, {Mag[2]}\n")
     schedule.run_pending()
     print("\r\n /-------------------------------------------------------------/ \r\n")
     print('\r\n Roll = %.2f , Pitch = %.2f , Yaw = %.2f\r\n'%(roll,pitch,yaw))

@@ -1,5 +1,6 @@
 from AES import*
 import time
+from test import*
 
 # A Huffman Tree Node
 class Node:
@@ -140,45 +141,29 @@ print("Decoded Output", Huffman_Decoding(encoding,tree))
 def compress_file(filename):
 	global tree, start
 	f = open(filename, "r")
-	f1 = open("data_compressed", "w")
+	f1 = open(filename[:12]+"_compressed", "w")
 	data = f.read()
-<<<<<<< HEAD
 	f.close()
-	#print(data)
-	#start = time.time()
 	print("Starting Compression...")
+	start_comp = time.time()
 	encoding, tree = Huffman_Encoding(data)
+	end_comp = time.time()
 	print("Compression Complete!")
-	#end = time.time()
-	#print("Compression time: ", end - start)
-	print("Starting Encryption...")
-	returned_data = encrypt_file(encoding)
-	print("Encryption Complete!")
-=======
-	#print(data)
-	#start = time.time()
-	encoding, tree = Huffman_Encoding(data)
-	#end = time.time()
-	#print("Compression time: ", end - start)
-	returned_data = encrypt_file(encoding)
->>>>>>> 7653749e9c714c01604e4b70dec95755ce23e700
-	#print("Compression time: ", end - start)
-	f1.write(encoding)
-	#print("Decoded Output", Huffman_Decoding(encoding, tree))
-
-	f3 = open("data_decompressed", "w")
-	start = time.time()
-<<<<<<< HEAD
+	print(f"COMPRESSION: {(end_comp-start_comp):.6f} seconds")
+	process()
+	f1.write(encoding)   #write compressed data into file
+	f1.close()
+	returned_data = encrypt_file(encoding)     #send compressed data to encryption block
+	
+	#write decompressed data to another file
+	f3 = open(filename[:12]+"_decompressed", "w")
 	print("Starting Decompression...")
+	start = time.time()
 	decrypted_data = Huffman_Decoding(returned_data, tree)
 	end = time.time()
-	print("Decompression: ", end-start)
+	print(f"DECOMPRESSION: {(end-start):.6f} seconds")
+	process()
 	print("Done!")
-=======
-	decrypted_data = Huffman_Decoding(returned_data, tree)
-	end = time.time()
-	print("Decompression: ", end-start)
->>>>>>> 7653749e9c714c01604e4b70dec95755ce23e700
 	f3.write(decrypted_data)
 	f3.close()
 

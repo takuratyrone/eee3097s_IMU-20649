@@ -3,7 +3,9 @@ import hashlib
 from Cryptodome.Cipher import AES 
 import os 
 from Cryptodome.Random import get_random_bytes
-from huffman import* 
+from huffman import*
+import time
+from test import* 
 
 def encrypt(plain_text, password):
     # generate a random salt
@@ -43,30 +45,24 @@ def encrypt_file(filename):
     password = input("Password: ")
     f = open("data_encrypted", "w")
     f1 = open("data_decrypted", "w")
-    #read_file = f.read()
-    # First let us encrypt secret message
-<<<<<<< HEAD
-    print("Starting Compression...")
+    print("Starting Encryption...")
+    start_enc = time.time()
     encrypted = encrypt(filename, password)
+    end_enc = time.time()
     print("Encryption Complete...")
+    process() #CPU and RAM usage after encryption
+    print(f"ENCRYPTION: {(end_enc-start_enc):.6f} seconds")
     f.write(str(encrypted))
 
     print("Starting Decryption...")
-=======
-    encrypted = encrypt(filename, password)
-    #print(encrypted)
-    f.write(str(encrypted))
->>>>>>> 7653749e9c714c01604e4b70dec95755ce23e700
+    start_dec = time.time()
     decrypted = decrypt(encrypted, password)
+    end_dec = time.time()
+    print(f"DECRYPTION: {(end_dec-start_dec):.6f} seconds")
     f1.write(str(decrypted))
     str_decrypted = str(decrypted.decode('utf-8'))
-    #print(str_decrypted)
-    #decompress_file(str_decrypted)
-    #print(bytes.decode(decrypted))
-<<<<<<< HEAD
     print("Decryption Complete...")
-=======
->>>>>>> 7653749e9c714c01604e4b70dec95755ce23e700
+    process()   #CPU and RAM usage after decryption
     return str_decrypted
 
 def decrypt_file(filename):
